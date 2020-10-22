@@ -2,12 +2,13 @@
   "name": "neboerbot",
   "version": "1.0.0",
   "description": "a minecraft bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "author": "Neboer",
   "license": "MIT",
   "dependencies": {
     "minecraft-data": "^2.69.1",
-    "mineflayer": "^2.31.0"
+    "mineflayer": "^2.31.0",
+    "mineflayer-pathfinder": "^1.0.11"
   },
   "devDependencies": {
     "vec3": "^0.1.7"
