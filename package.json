@@ -1,0 +1,15 @@
+{
+  "name": "neboerbot",
+  "version": "1.0.0",
+  "description": "a minecraft bot",
+  "main": "index.js",
+  "author": "Neboer",
+  "license": "MIT",
+  "dependencies": {
+    "minecraft-data": "^2.69.1",
+    "mineflayer": "^2.31.0"
+  },
+  "devDependencies": {
+    "vec3": "^0.1.7"
+  }
+}
