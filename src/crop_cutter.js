@@ -1,26 +1,19 @@
-const {calculate_the_diff_of_coordinate} = require('./libs')
+const {go_there} = require("./libs")
 
 function think_of_harvest(bot, target_block, cb) {
     let target_is_dig = false
     let work_is_finished = false
-    let init_cd = calculate_the_diff_of_coordinate(bot, target_block)
-    bot.lookAt(target_block.position, false,() => bot.setControlState("forward", true))
+    go_there(bot, target_block.position)
     return function () {
         if (!work_is_finished) {
             if (!target_is_dig) {
                 if (bot.canDigBlock(target_block)) {
-                    try {
-                        bot.dig(target_block)
-                    } catch (err) {
-                        console.error(err)
-                    }
+                    bot.dig(target_block)
                     target_is_dig = true
                 }
             }
-            let curr_cd = calculate_the_diff_of_coordinate(bot, target_block)
-            if (init_cd[0] * curr_cd[0] < 0 || init_cd[1] * curr_cd[1] < 0 || bot.entity.position.distanceTo(target_block.position) <= 0.5) {
+            if (target_block.position.distanceTo(bot.entity.position) <= 1) {
                 work_is_finished = true
-                bot.clearControlStates()
                 cb()
             }
         }
