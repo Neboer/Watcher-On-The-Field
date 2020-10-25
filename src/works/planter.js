@@ -2,6 +2,7 @@ const {Vec3} = require('vec3')
 
 async function check_can_plant_seed(bot) {
     let has_seed = bot.inventory.findInventoryItem(619, null, false)
+    if (!has_seed) return null
     let ploughs_corr_list = bot.findBlocks({
         matching: block => {
             return (block.name === 'farmland')
@@ -19,9 +20,9 @@ async function check_can_plant_seed(bot) {
 }
 
 async function plant_seed(bot, plough_block) {
-    await bot.go(plough_block.position, 2)
     let seed = bot.inventory.findInventoryItem(619, null, false)
     await bot.Equip(seed, "hand")
+    await bot.go(plough_block.position, 4)
     await bot.PlaceBlock(plough_block, new Vec3(0, 1, 0))
 }
 

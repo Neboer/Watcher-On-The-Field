@@ -4,12 +4,12 @@ const {go, register_bot_move} = require('../botMove')
 const keepDoing = require('./keep_trying')
 const cbConverter = require('./callback_converter')
 
-
 function early_hooks(bot) {
     register_bot_move(bot)
     bot.go = (targetPosition, distance) => {
         go(bot, targetPosition, distance)
     }
+    // 通过hook"equip"方法，达到让机器人无法切换其他在手物品的目的。
     bot.equip = (function () {
         let ori_equ = bot.equip
         return function (item, position, cb) {
@@ -29,6 +29,7 @@ function early_hooks(bot) {
     bot.Dig = (...params) => keepDoing(cbConverter(bot.dig, 1000), params, 3)
     bot.PlaceBlock = (...params) => keepDoing(cbConverter(bot.placeBlock, 1000), params, 3)
     bot.Equip = (...params) => keepDoing(cbConverter(bot.equip, 1000), params, 3)
+    bot.Craft = cbConverter(bot.craft, 0)
 }
 
 module.exports = early_hooks

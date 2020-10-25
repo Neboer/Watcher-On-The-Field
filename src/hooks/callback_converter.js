@@ -3,12 +3,9 @@ let TimeOutError = new Error("timeout")
 // let ParametersCountNotMatchError = new Error("too much parameters")
 
 function convert_a_callback_into_a_promise_function(func, callback_timeout) {
-    if (callback_timeout < 0) { // 无timeout
-        return function (...args) {// 有意义的变量列表，不包含回调函数。
-            // if (args.length !== func.length - 1) {
-            //     console.error("parameters error! " + func.name)
-            //     throw ParametersCountNotMatchError
-            // }
+    let ret_func
+    if (callback_timeout <= 0) { // 无timeout
+        ret_func = function (...args) {// 有意义的变量列表，不包含回调函数。
             return new Promise((onResolve, onReject) => {
                 func(...args, (err) => {
                     if (err) onReject(err)
@@ -17,11 +14,7 @@ function convert_a_callback_into_a_promise_function(func, callback_timeout) {
             })
         }
     } else {
-        return function (...args) {// 有意义的变量列表，不包含回调函数。
-            // if (args.length !== func.length - 1) {
-            //     console.error("parameters error! " + func.name)
-            //     throw ParametersCountNotMatchError
-            // }
+        ret_func = function (...args) {// 有意义的变量列表，不包含回调函数。
             let execute_finished = false
             return new Promise((onResolve, onReject) => {
                 func(...args, (err) => {
@@ -35,6 +28,8 @@ function convert_a_callback_into_a_promise_function(func, callback_timeout) {
             })
         }
     }
+    ret_func.extra_data = func.name
+    return ret_func
 }
 
 module.exports = convert_a_callback_into_a_promise_function
