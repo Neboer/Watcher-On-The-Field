@@ -1,6 +1,6 @@
 # Watcher On The Field
 
-minecraft 麦田里的守望者：自动小麦收割机器人
+minecraft 麦田里的守望者：自动小麦收割机器人 V2.0
 
 ## 功能
 本程序是minecraft的一个机器人，基于[mineflayer](https://github.com/PrismarineJS/mineflayer)库开发。目前拥有如下功能：
