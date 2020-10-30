@@ -15,15 +15,10 @@ const bot = mineflayer.createBot({
     version: '1.16.3',
     viewDistance: "far"
 })
-earlyHook(bot)
+
 bot.on("spawn", async () => {
+    earlyHook(bot)
     while (true) {
-        let item = await get_item_on_ground(bot)
-        if (item) {
-            // console.log(item.position)
-            await pickup(bot, item)
-            // console.log("end")
-        }
-        await wait(1000)
+
     }
 })

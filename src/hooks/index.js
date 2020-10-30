@@ -1,38 +1,31 @@
 /* 有一些函数需要升级为高级函数。需要升级的函数有：dig -> Dig, placeBlock -> PlaceBlock, equip -> Equip */
 /* 有一些函数需要原名bind到bot对象上，botMove里的go。*/
-// const {go, register_bot_move} = require('../botMove')
 const bind_reach_move = require('../botMove/plain_move')
 const keepDoing = require('./keep_trying')
 const cbConverter = require('./callback_converter')
+const {distant_to, find_nearest_block} = require('./tools')
+const {bind_bot: action_bind_bot} = require('../actions')
+const {get_game_scene} = require('../works/get_game_section')
 
 function early_hooks(bot) {
-    // register_bot_move(bot)
-    // bot.go = (targetPosition, distance) => {
-    //     go(bot, targetPosition, distance)
-    // }
-    // 通过hook"equip"方法，达到让机器人无法切换其他在手物品的目的。
-    // bot.equip = (function () {
-    //     let ori_equ = bot.equip
-    //     return function (item, position, cb) {
-    //         if (item && item.type === 619) ori_equ(item, position, cb)
-    //         else cb()
-    //     }
-    // })()
-    bind_reach_move(bot)
-    // 修改dig，这类函数还需要因为有寻路系统存在。
-    // bot.dig = (function () {
-    //     let ori_dig = bot.dig
-    //     return function (target_block, cb) {
-    //         if (target_block.name === 'wheat' && target_block.stateId === 3364) ori_dig(target_block, cb)
-    //         else cb()
-    //     }
-    // })()
-    // 执行此函数会当场执行数次命令并返回promise
     bot.Dig = (...params) => keepDoing(cbConverter(bot.dig, 1000), params, 3)
     bot.PlaceBlock = (...params) => keepDoing(cbConverter(bot.placeBlock, 1000), params, 3)
     bot.Equip = (...params) => keepDoing(cbConverter(bot.equip, 1000), params, 3)
-    bot.Craft = cbConverter(bot.craft, 0)
+    bot.Craft = cbConverter(bot.craft, 1000)
     bot.Consume = cbConverter(bot.consume, 0)
+    bot.ActivateBlock = cbConverter(bot.activateBlock, 1000)
+    action_bind_bot(bot)
+    bot.distant_to = function (target_pos) {
+        return distant_to(bot, target_pos)
+    }
+    bot.find_nearest_block = function (block_list) {
+        return find_nearest_block(bot, block_list)
+    }
 }
 
-module.exports = early_hooks
+function late_hooks(bot) {
+    get_game_scene(bot)
+    bind_reach_move(bot)
+}
+
+module.exports = {early_hooks, late_hooks}

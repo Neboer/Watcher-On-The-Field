@@ -6,7 +6,8 @@ module.exports = {
         version: '1.16.3',
         viewDistance: "far"
     },
-    range: [[-129, 47], [-139, 56]],
+    range: [[-42, 128], [-50, 120]],// 矩形麦田的两点x/z坐标
+    height: 3, // 耕地方块的高度y坐标。
     async login_immediate(bot) {// 当登录之后立即执行以下命令
         setTimeout(() => {
             bot.chat('/login password')
