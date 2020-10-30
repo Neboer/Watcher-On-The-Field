@@ -14,6 +14,12 @@ function find_nearest_block(bot, block_list) {
     return nearest_block
 }
 
+function wait(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
+}
+
 // async function use_composter(bot, composter_block){
 //
 // }
@@ -22,4 +28,4 @@ function find_nearest_block(bot, block_list) {
 //
 // }
 
-module.exports ={distant_to, find_nearest_block}
+module.exports ={distant_to, find_nearest_block, wait}

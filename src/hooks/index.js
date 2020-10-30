@@ -3,15 +3,19 @@
 const bind_reach_move = require('../botMove/plain_move')
 const keepDoing = require('./keep_trying')
 const cbConverter = require('./callback_converter')
-const {distant_to, find_nearest_block} = require('./tools')
+const {distant_to, find_nearest_block, wait} = require('./tools')
 const {bind_bot: action_bind_bot} = require('../actions')
 const {get_game_scene} = require('../works/get_game_section')
 
 function early_hooks(bot) {
+    bot.wait = wait
     bot.Dig = (...params) => keepDoing(cbConverter(bot.dig, 1000), params, 3)
     bot.PlaceBlock = (...params) => keepDoing(cbConverter(bot.placeBlock, 1000), params, 3)
     bot.Equip = (...params) => keepDoing(cbConverter(bot.equip, 1000), params, 3)
-    bot.Craft = cbConverter(bot.craft, 1000)
+    bot.Craft = async (recipe, count, cf_table) => {
+        bot.craft(recipe, count, cf_table, (e) => {if (e) console.error('ce')})
+        await bot.wait(1000)
+    }
     bot.Consume = cbConverter(bot.consume, 0)
     bot.ActivateBlock = cbConverter(bot.activateBlock, 1000)
     action_bind_bot(bot)
@@ -21,6 +25,7 @@ function early_hooks(bot) {
     bot.find_nearest_block = function (block_list) {
         return find_nearest_block(bot, block_list)
     }
+
 }
 
 function late_hooks(bot) {
