@@ -6,18 +6,23 @@ const cbConverter = require('./callback_converter')
 const {distant_to, find_nearest_block, wait} = require('./tools')
 const {bind_bot: action_bind_bot} = require('../actions')
 const {get_game_scene} = require('../works/get_game_section')
+const bind_reporter = require('../message')
+const Mutex = require('async-mutex').Mutex;
 
 function early_hooks(bot) {
     bot.wait = wait
+    bot.mutex = new Mutex()
     bot.Dig = (...params) => keepDoing(cbConverter(bot.dig, 1000), params, 3)
     bot.PlaceBlock = (...params) => keepDoing(cbConverter(bot.placeBlock, 1000), params, 3)
     bot.Equip = (...params) => keepDoing(cbConverter(bot.equip, 1000), params, 3)
     bot.Craft = async (recipe, count, cf_table) => {
-        bot.craft(recipe, count, cf_table, (e) => {if (e) console.error('ce')})
-        await bot.wait(1000)
+        bot.craft(recipe, count, cf_table, (e) => {bot.logger.error(e)})
+        await bot.wait(200)
     }
     bot.Consume = cbConverter(bot.consume, 0)
     bot.ActivateBlock = cbConverter(bot.activateBlock, 1000)
+    bot.LookAt = cbConverter(bot.lookAt, 0)
+    bind_reporter(bot)
     action_bind_bot(bot)
     bot.distant_to = function (target_pos) {
         return distant_to(bot, target_pos)
