@@ -1,5 +1,4 @@
 const Vec3 = require('vec3')
-const {badly_make_hey, badly_pile_seed} = require('./clean')
 
 let bot
 
@@ -59,7 +58,22 @@ module.exports = {
             await wait(500)
         }
     },
-    badly_pile_seed, badly_make_hey,
+    async badly_pile_seed(composter) {// 持续堆肥以清空物品栏里的小麦种子
+        await bot.go(composter.position, 3)
+        do {
+            let wheat_seed = bot.inventory.findInventoryItem(619, null, false)
+            bot.equip(wheat_seed, "hand", () => bot.activateBlock(composter))
+            await bot.wait(300)
+        } while (bot.inventory.count(619, null) > 64)
+    },
+    async badly_make_hey(cf_table) {// 持续做小麦以清空物品栏里的小麦
+        await bot.go(cf_table.position, 3)
+        let recipe = bot.recipesFor(349, null, 1, cf_table)[0]
+        do {
+            await bot.Craft(recipe, 1, cf_table)
+            await bot.wait(300)
+        } while (bot.inventory.count(620, null) > 9)
+    },
     // 捡起地上散落的物品
     async pick_up(item) {
         await bot.go(item.position, 0)
