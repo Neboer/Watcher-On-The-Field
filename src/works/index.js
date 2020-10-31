@@ -13,7 +13,6 @@ async function start_event_loop(bot, timeout) {
         let release = await bot.mutex.acquire() // 防止和事件循环产生冲突，锁住机器人
         let section = get_game_section(bot)
         let action = analyse_a_section_and_make_decision(section)
-        bot.logger.verbose(action[0].name)
         try {
             await action[0](...action.slice(1))
         } catch (e) {

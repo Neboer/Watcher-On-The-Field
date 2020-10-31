@@ -18,9 +18,15 @@ function get_game_section(bot) {
         return bot.inventory.count(id, null)
     }
 
+    let wheat_groups_count = 0
+    for(let i = 0; i < bot.inventory.slots.length; i++){
+        let item = bot.inventory.slots[i]
+        if (item && item.type === 620 && item.count === 64) wheat_groups_count++
+    }
     let items = find_block_in_layer(bot)
     return {
         wheat_count: count(620),
+        wheat64_group_count: wheat_groups_count,
         bread_count: count(621),
         seed_count: count(619),// 小麦种子
         powder_count: count(712), // 骨粉

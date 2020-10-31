@@ -22,6 +22,7 @@ function early_hooks(bot) {
     bot.Consume = cbConverter(bot.consume, 0)
     bot.ActivateBlock = cbConverter(bot.activateBlock, 1000)
     bot.LookAt = cbConverter(bot.lookAt, 0)
+    bot.ClickWindow = cbConverter(bot.clickWindow, 1000)
     bind_reporter(bot)
     action_bind_bot(bot)
     bot.distant_to = function (target_pos) {

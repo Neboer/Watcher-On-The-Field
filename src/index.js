@@ -3,11 +3,12 @@ const {early_hooks, late_hooks} = require('./hooks')
 const {bot_config, login_immediate} = require('../config')
 const start_event_loop = require('./works')
 const bind_logger = require('./hooks/logger')
+// const inventoryViewer = require('mineflayer-web-inventory')
 
 const bot = mineflayer.createBot(bot_config)
 
 bind_logger(bot)
-
+// inventoryViewer(bot)
 bot.on("spawn", () => {
     bot.logger.info('bot is spawned')
 
