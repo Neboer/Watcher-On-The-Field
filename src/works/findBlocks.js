@@ -6,6 +6,8 @@ const Vec3 = require('vec3')
 // 找到地面上的未成熟小麦块/成熟小麦块和空田地之一。
 function find_block_in_layer(bot) {
     let kx = 1, kz = 1
+    let dis = {empty_block: Infinity, good_wheat: Infinity, green_wheat: Infinity}
+    let get_distant =(block) => bot.entity.position.distanceTo(block.position)
     if (rangeRect[0][0] > rangeRect[1][0]) kx = -1
     if (rangeRect[0][1] > rangeRect[1][1]) kz = -1
     let green_wheat = null, good_wheat = null, empty_block = null;
@@ -13,9 +15,20 @@ function find_block_in_layer(bot) {
         for (let z = rangeRect[0][1]; z !== rangeRect[1][1] + kz; z += kz) {
             let cb = bot.blockAt(new Vec3(x, height, z));
             let ub = bot.blockAt(new Vec3(x, height + 1, z));
-            if (cb && cb.type === 153 && ub && ub.type === 0) empty_block = cb
-            if (ub && ub.type === 152 && ub.stateId === 3364) good_wheat = ub
-            if (ub && ub.type === 152 && ub.stateId !== 3364) green_wheat = ub
+            if (cb && cb.type === 153 && ub && ub.type === 0 && get_distant(ub) < dis.empty_block) {
+                empty_block = cb
+                dis.empty_block = get_distant(ub)
+                continue
+            }
+            if (ub && ub.type === 152 && ub.stateId === 3364 && get_distant(ub) < dis.good_wheat) {
+                good_wheat = ub
+                dis.good_wheat = get_distant(ub)
+                continue
+            }
+            if (ub && ub.type === 152 && ub.stateId !== 3364 && get_distant(ub) < dis.green_wheat) {
+                green_wheat = ub
+                dis.green_wheat = get_distant(ub)
+            }
         }
     }
     return {green_wheat, good_wheat, empty_block}

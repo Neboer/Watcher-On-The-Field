@@ -54,11 +54,12 @@ module.exports = {
     // },
     // 堆count次肥
     async pile_bone_meal(composter, count) {
+        bot.logger.info('pile bone meal...')
         await bot.go(composter.position, 4)
         for (let i = 1; i <= count; i++) {
             let wheat_seed = bot.inventory.findInventoryItem(619, null, false)
             bot.equip(wheat_seed, "hand", () => bot.activateBlock(composter))
-            await wait(500)
+            await wait(300)
         }
     },
     async badly_pile_seed(composter) {// 持续堆肥以清空物品栏里的小麦种子

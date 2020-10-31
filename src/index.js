@@ -3,12 +3,19 @@ const {early_hooks, late_hooks} = require('./hooks')
 const {bot_config, login_immediate} = require('../config')
 const start_event_loop = require('./works')
 const bind_logger = require('./hooks/logger')
-// const inventoryViewer = require('mineflayer-web-inventory')
+const inventoryViewer = require('mineflayer-web-inventory')
 
 const bot = mineflayer.createBot(bot_config)
 
 bind_logger(bot)
-// inventoryViewer(bot)
+inventoryViewer(bot)
+
+bot.on("end", () => {
+    bot.logger.error('bot is no longer connected to the server!')
+    bot.end()
+    process.exit(1)
+})
+
 bot.on("spawn", () => {
     bot.logger.info('bot is spawned')
 
@@ -25,7 +32,7 @@ bot.on("spawn", () => {
             late_hooks(bot)
             // console.log(bot.inventory.items())
             bot.logger.info('bot is login')
-            start_event_loop(bot, 1000)
+            start_event_loop(bot, 200)
         }, 3000)
     })
 })

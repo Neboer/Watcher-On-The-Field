@@ -16,6 +16,7 @@ async function tossAll(bot) {
             await bot.wait(1000)
         }
         release()
+        bot.logger.info('toss complete')
     } else {
         return
     }
