@@ -31,7 +31,7 @@ function get_game_section(bot) {
         seed_count: count(619),// 小麦种子
         powder_count: count(712), // 骨粉
         empty_slots_count: bot.inventory.emptySlotCount(),
-        is_hunger: bot.food <= 18,
+        is_hunger: bot.food <= 14,
         height: height,// 耕地高度
         square: Math.abs((range[1][0] - range[0][0]) * (range[1][1] - range[0][1])),// 小麦田面积
         nearest_crafting_table: bot.find_nearest_block(bot.crafting_tables),

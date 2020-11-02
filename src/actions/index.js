@@ -1,5 +1,6 @@
 const Vec3 = require('vec3')
 const {craft_9groups_of_wheat_into_1groups_of_hay, cf_bind_bot}  = require('./crafting_table')
+const _badly_pile_seeds = require('./pile_seeds')
 let bot
 
 function wait(ms) {
@@ -53,26 +54,20 @@ module.exports = {
     //     await bot.Craft(recipe, count, crafting_table)
     // },
     // 堆count次肥
-    async pile_bone_meal(composter, count) {
-        bot.logger.info('pile bone meal...')
-        await bot.go(composter.position, 4)
-        for (let i = 1; i <= count; i++) {
-            let wheat_seed = bot.inventory.findInventoryItem(619, null, false)
-            bot.equip(wheat_seed, "hand", () => bot.activateBlock(composter))
-            await wait(300)
-        }
+    // async badly_pile_seed(composter) {// 持续堆肥以清空物品栏里的小麦种子
+    //     bot.logger.info('start pile seeds make bone meal')
+    //     await bot.go(composter.position, 3)
+    //     do {
+    //         let wheat_seed = bot.inventory.findInventoryItem(619, null, false)
+    //         bot.equip(wheat_seed, "hand", () =>
+    //             bot.activateBlock(composter))
+    //         await bot.wait(100)
+    //     } while (bot.inventory.count(619, null) > 64)
+    //     bot.logger.info('piling seeds complete')
+    // },
+    async badly_pile_seed(composter) {
+      await _badly_pile_seeds(bot, composter, 0)
     },
-    async badly_pile_seed(composter) {// 持续堆肥以清空物品栏里的小麦种子
-        bot.logger.info('start pile seeds make bone meal')
-        await bot.go(composter.position, 3)
-        do {
-            let wheat_seed = bot.inventory.findInventoryItem(619, null, false)
-            bot.equip(wheat_seed, "hand", () => bot.activateBlock(composter))
-            await bot.wait(300)
-        } while (bot.inventory.count(619, null) > 64)
-        bot.logger.info('piling seeds complete')
-    },
-
     // 捡起地上散落的物品
     async pick_up(item) {
         await bot.go(item.position, 0)
