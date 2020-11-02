@@ -6,7 +6,7 @@ const myFormat = printf(({level, message, timestamp}) => {
 });
 
 const logger = createLogger({
-    level: 'info',
+    level: 'debug',
     format: format.combine(
         errors({ stack: true }),
         timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),

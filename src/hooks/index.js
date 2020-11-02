@@ -13,8 +13,14 @@ const grab = require('../actions/grab')
 function early_hooks(bot) {
     bot.wait = wait
     bot.mutex = new Mutex()
+    bot.Swing = false
+    setInterval(() => {
+        if (bot.Swing) bot.swingArm()
+    }, 1000)
     bot.Dig = (...params) => keepDoing(cbConverter(bot.dig, 1000), params, 3)
-    bot.PlaceBlock = (...params) => keepDoing(cbConverter(bot.placeBlock, 1000), params, 3)
+    bot.PlaceBlock = async (block, fv) => {
+        return bot.placeBlock(block, fv, new Function())
+    }
     bot.Grab = (id) => grab(bot, id)
     bot.Craft = async (recipe, count, cf_table) => {
         bot.craft(recipe, count, cf_table, (e) => {
@@ -23,7 +29,20 @@ function early_hooks(bot) {
         await bot.wait(200)
     }
     bot.Consume = cbConverter(bot.consume, 0)
-    bot.ActivateBlock = cbConverter(bot.activateBlock, 1000)
+    bot.ActivateBlock = async (target_block) => {
+        bot.Swing = true
+        bot._client.write('block_place', {
+            location: target_block.position,
+            direction: 1,
+            hand: 0,
+            cursorX: 0.5,
+            cursorY: 0.5,
+            cursorZ: 0.5,
+            insideBlock: false
+        })
+        await wait(200)
+        bot.Swing = false
+    }
     bot.LookAt = cbConverter(bot.lookAt, 0)
     bot.ClickWindow = cbConverter(bot.clickWindow, 1000)
     bind_reporter(bot)

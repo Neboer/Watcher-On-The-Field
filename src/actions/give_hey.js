@@ -13,7 +13,7 @@ async function tossAll(bot) {
         const items = bot.inventory.items() // get the items
         for(let i = 0; items[i]; i++) {
             bot.tossStack(items[i])
-            await bot.wait(1000)
+            // await bot.wait(1000)
         }
         release()
         bot.logger.info('toss complete')

@@ -30,7 +30,7 @@ function craft_9groups_of_wheat_into_1groups_of_hay(craftingTable) {
                         mode: 1,
                         item: {present: false}
                     })
-                    await bot.wait(5000)// 就硬等。
+                    await bot.wait(1000)// 就硬等。
                     bot.closeWindow(window)
                     bot.logger.info('Crafting complete')
                     resolve()

@@ -40,7 +40,7 @@ function get_game_section(bot) {
         good_wheat_block: items.good_wheat,
         empty_field_block: items.empty_block,
         drop_item: bot.nearestEntity(entity => {
-            return (entity.name === 'item' && in_range(entity.position) && Math.abs(entity.position.y - bot.entity.position.y) < 0.1)
+            return (entity.name === 'item' && in_range(entity.position) && Math.abs(entity.position.y - bot.entity.position.y) < 0.5)
         }),
         center: new Vec3(Math.round((range[0][0] + range[1][0]) / 2), height, Math.round((range[0][1] + range[1][1]) / 2))
     }
