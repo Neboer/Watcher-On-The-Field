@@ -1,10 +1,9 @@
 // 生包直接怼脸，非常硬核的堆肥桶使用指南。
 async function pile_all_seeds_with_remains(bot, composter, remain_seeds_count){
-    bot.go(composter.position, 2)
+    bot.go(composter.position, 0)
     bot.logger.info('start piling seeds until little left...')
     while (bot.inventory.count(619, null) > remain_seeds_count){
-        let seed = bot.inventory.findInventoryItem(619, null, false)
-        await bot.Equip(seed, "hand")
+        await bot.Grab(619)
         // 生包怼脸xcw
         bot._client.write('block_place', {
             location: composter.position,

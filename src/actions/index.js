@@ -17,8 +17,7 @@ module.exports = {
     // 催熟指定的小麦
     async maturation(target_wheat) {
         await bot.go(target_wheat.position, 4)
-        let bone_meal = bot.inventory.findInventoryItem(712, null, false)
-        await bot.Equip(bone_meal, "hand")
+        await bot.Grab(712)
         await bot.ActivateBlock(target_wheat)
     },
     // 打掉目标作物
@@ -28,9 +27,8 @@ module.exports = {
     },
     // 种种子
     async plant_seed_on(target_plough) {
-        let seed = bot.inventory.findInventoryItem(619, null, false)
-        await bot.Equip(seed, "hand")
         await bot.go(target_plough.position, 4)
+        await bot.Grab(619)
         await bot.PlaceBlock(target_plough, new Vec3(0, 1, 0))
     },
     // 做1个面包
@@ -42,8 +40,7 @@ module.exports = {
     // 吃1个身上的面包
     async eat_bread() {
         bot.logger.info('eat bread.')
-        let bread = bot.inventory.findInventoryItem(621, null, true)
-        await bot.Equip(bread, "hand")
+        await bot.Grab(621)
         await bot.Consume()
     },
     craft_9groups_of_wheat_into_1groups_of_hay,

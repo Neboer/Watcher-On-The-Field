@@ -8,15 +8,18 @@ const {bind_bot: action_bind_bot} = require('../actions')
 const {get_game_scene} = require('../works/get_game_section')
 const bind_reporter = require('../message')
 const Mutex = require('async-mutex').Mutex;
+const grab = require('../actions/grab')
 
 function early_hooks(bot) {
     bot.wait = wait
     bot.mutex = new Mutex()
     bot.Dig = (...params) => keepDoing(cbConverter(bot.dig, 1000), params, 3)
     bot.PlaceBlock = (...params) => keepDoing(cbConverter(bot.placeBlock, 1000), params, 3)
-    bot.Equip = (...params) => keepDoing(cbConverter(bot.equip, 1000), params, 3)
+    bot.Grab = (id) => grab(bot, id)
     bot.Craft = async (recipe, count, cf_table) => {
-        bot.craft(recipe, count, cf_table, (e) => {bot.logger.error(e)})
+        bot.craft(recipe, count, cf_table, (e) => {
+            bot.logger.error(e)
+        })
         await bot.wait(200)
     }
     bot.Consume = cbConverter(bot.consume, 0)
