@@ -19,7 +19,7 @@ function bind_reporter(bot) {
                     powder: count(712), // 骨粉
                     hey: count(349),// 干草捆
                     empty_box: bot.inventory.emptySlotCount(),
-                    is_hunger: bot.food <= 18,
+                    is_hunger: bot.food,
                 }
                 bot.chat(`/tell ${report_to} ${JSON.stringify(inventory_object)}`)
                 bot.logger.info('report inventory state to master')
