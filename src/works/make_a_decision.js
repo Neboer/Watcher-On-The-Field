@@ -6,7 +6,7 @@ function analyse_a_section_and_make_decision(game_section) {
     let s = game_section
     if (s.empty_slots_count <= 1)
         if (s.nearest_composter && s.seed_count > 64) return [badly_pile_seed, s.nearest_composter]// 物品栏空间不足，优先堆积。
-    if (s.wheat64_group_count >= 9) return [craft_9groups_of_wheat_into_1groups_of_hay, s.nearest_crafting_table]// 有足够整组的小麦，直接打成干草块
+    if (s.wheat64_group_count >= 9 && s.nearest_crafting_table) return [craft_9groups_of_wheat_into_1groups_of_hay, s.nearest_crafting_table]// 有足够整组的小麦，直接打成干草块
     if (s.drop_item) return [pick_up, s.drop_item]
     if (s.powder_count && s.green_wheat_block) return [maturation, s.green_wheat_block]
     // if (s.wheat_count >= 3 && s.bread_count <= 2 && s.nearest_crafting_table) return [craft_bread, s.nearest_crafting_table]
