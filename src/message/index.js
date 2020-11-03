@@ -4,6 +4,10 @@ const toss_all = require('../actions/give_hey')
 
 function bind_reporter(bot) {
     bot.on('message', async (json_msg, position) => {
+        if (position === 'system' && JSON.stringify(json_msg).includes('§6§6拒绝传送.')){
+            bot.chat(`/tpaccept ${json_msg.json.extra[5].text.slice(2)}`)
+            return
+        }
         let message = get_chat(json_msg)
         if (message && message.username === report_to) {
             bot.logger.info('receive master message ' + message.message)
