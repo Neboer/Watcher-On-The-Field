@@ -15,6 +15,7 @@ async function tossAll(bot) {
             bot.tossStack(items[i])
             await bot.wait(500)
         }
+        await bot.wait(3000)// 等待3秒钟，让人把它捡起来。
         release()
         bot.logger.info('toss complete')
     } else {
